@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>OWASP WebGoat Web Hacking Simulation Series &copy; YGN Ethical Hacker Group (YEHG), Yangon, Myanmar - http://yehg.net</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<link rel="shortcut icon" href="./assets/favicon.ico">
+<meta content="YGN Ethical Hacker Group" name="developer">
+<meta content="A Series of Full-Featured Web Hacking WalkThrough Simulations played in OWASP WebGoat environment." name="description">
+<meta content="webgoat,owasp,simulation,hacking,web,walkthrough,series,xss,xst,attack,exploit,http,training,movie,tutorial,flaw,bypass,session,authenticaion,injection,hacking,security,sql,injection,xsrf,access,control,web,application,multi-level,login,fixation,spoofing,cookie,hijack,httponly,xpath,insecure,services,ajax,dom-based,stored,reflected,same,origin,policy,json,eval,filtering" name="keywords">
+<link href="./assets/movie.css" rel="stylesheet" style="text/css">
+<script type="text/javascript">
+function loadpg()
+{
+		document.getElementById('loading').style.display = 'none';
+		document.getElementById('body_content').style.display = '';
+}
+onload = function(){loadpg();}  
+</script><style type="text/css"></style>
+<script type="text/javascript" src="./assets/mootools-smoothscroll.js"></script>
+<script type="text/javascript" src="./assets/movie.js"></script>
+<script type="text/javascript">window.addEvent('domready',function() { new SmoothScroll({ duration: 1800 }); });</script>
+</head>
+<body>
+<span id="loading" style="display: none;">Loading ...</span>
+<span id="spn_dl" style="width:110%;height:99%;top:0;left:0;display:none;position:fixed;">
+<span onclick="close_dl()" style="color:gray;cursor:pointer;font-size:42px;position:fixed;left:94%;top:0%;"><input type="button" style=' -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+    filter: alpha(opacity=70);
+    -webkit-opacity: 0.7;
+    -moz-opacity: 0.7;
+    opacity: .7;cursor:pointer;' value="Close [X]"/></span>
+<br/>
+
+
+<iframe id="ifr_dl" scrolling="auto" title="Double click the movie to view in full screen" style="width:90%;height:97%;position:relative;top:0" src="about:blank" allowFullScreen></iframe>
+</span>
+<span id="body_content" style="">
+	<iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FYGN-Ethical-Hacker-Group%2F102385936502108&amp;width=292&amp;colorscheme=light&amp;show_faces=false&amp;stream=false&amp;header=false&amp;height=62" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;position:absolute;left:76%;top:2%" allowTransparency="true"></iframe>
+
+	<br/>
+<a href="http://yehg.net/lab" target="_blank"><img src="./assets/training_logo.gif" alt="Logo" border="0"></a>
+
+<br/>
+
+<div style="float:right;">
+<a href="http://yehg.net/lab/pr0js/training/webscarab.php">Webscarab</a> |<a href="http://yehg.net/lab/#training">More Trainings&gt;&gt;</a>
+</div><br clear="all">
+<h2><a href="http://www.owasp.org/index.php/Category:OWASP_WebGoat_Project" target="_blank">OWASP WebGoat</a> v5.4  Web Hacking Simulation WalkThrough Series </h2>
+
+<div style="color:red">
+<script>
+if (document.domain.toString()!='yehg.net'){
+document.write('This is offline/mirrored WebGoat Training site. Check out the <a href="http://yehg.net/lab/pr0js/training/webgoat.php" style="text-decoration:underline;color:red!important">live page</a> for update especially when new WebGoat version is out - we may add new movies. ');
+}
+</script>
+</div><span>
+<br/>Lesson category titles (e.g., Unvalidated Parameters) may be dynamically changing per WebGoat new version. Please search your desired movies by lesson titles such as Command Injection, Stored XSS, Forced Browsing. We won't be modifying category titles in our movies in accordance with every new WebGoat version.</div>
+<br/>
+<span class="i"> Tools and techniques used in our movies are not the only way to get through. There are many other alternatives to achieve the same goal.</span>
+There are a few movies left intentionally. These are do-it-yourself exercises.    
+<br/>
+<br/>
+<div class="i">Note: 
+<ol>
+  <li class="lidefault">Download <a href="http://code.google.com/p/webgoat" target="_blank">WebGoat</a>, <a href="http://owasp.org/software/webscarab.html" target="_blank">WebScarab</a>, <a href="http://portswigger.net/" target="_blank">Burp Suite</a>, and YEHG's <a href="http://sf.net/projects/hackfox" target="_blank">updated HackerFirefox</a> and YEHG's <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat//jhijackv0.1beta.zip" target="_blank">JHijack</a>. </li>
+  <li class="lidefault"><a href="https://addons.mozilla.org/en-US/firefox/collections/yehgdotnet/webhacker/" target="_blank">Check out and get</a> Firefox addons used in demo movies.</li>
+  <li class="lidefault">Learn any unfamiliar concepts in <a href="http://w3schools.com/" target="_blank">W3Schools</a>, <a href="http://w3.org/" target="_blank">W3c</a> , <a href="http://google.com/" target="_blank">Google</a>, <a href="http://owasp.org/" target="_blank">OWASP</a>, and <a href="http://webappsec.org/" target="_blank">WASC</a>. <br/>
+    If you don't know what I'm showing, stop the movie and learn the concept. If you get stuck, post your questions via contact form at <a href="http://yehg.net/" target="_blank">our home page</a>.</li>
+  <li class="lidefault"><a href="http://yehg.net/e/" target="_b">PHP Charset Encoder</a>, CSRF Generators used in movies can be found at <a href="http://yehg.net/lab/#toolbox" target="_blank">http://yehg.net/lab/#toolbox</a>.</li>  
+  <li class="lidefault">Check out <a href="http://yehg.net/lab/#training" target="_blank">other movies</a> which might reinforce your skills.</li>
+  <li class="lidefault">Check out <a href="http://yehg.net/hwd/?id=c&go=86" target="_blank">our collected web security bookmarks</a></li>
+  <li class="lidefault">Report broken download links to 404 @ yehg.net</li>
+</ol> 
+Keywords: Webgoat Lessons, Webgoat Tutorials, Webgoat Trainings, Webgoat Movies 
+</div>
+<hr>
+<br/>
+<span class="b"><a name="top" id="top">  </a>Index of -</span>
+<table>
+<tbody><tr>
+<td valign="top">
+<ul>
+<li> <a href="#General" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="General" rel="nofollow">General</a> 
+</li>
+<li> <a href="#Code_Quality" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Code Quality" rel="nofollow">Code Quality</a>
+</li>
+
+
+<li> <a href="#Concurrency" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Concurrency" rel="nofollow">Concurrency </a>
+</li>
+<li> <a href="#Unvalidated_Parameters" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Unvalidated Parameters" rel="nofollow">Unvalidated Parameters<br/> [<span style="font-size:smaller;">as of 5.3, changed to Parameter Tampering</span>]</a>
+</li><li> <a href="#Access_Control_Flaws" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Access Control Flaws" rel="nofollow">Access Control Flaws</a>
+
+</li><li> <a href="#Authentication_Flaws" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Authentication Flaws" rel="nofollow">Authentication Flaws</a>
+</li><li> <a href="#Session_Management_Flaws" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Session Management Flaws" rel="nofollow">Session Management Flaws</a>
+</li><li> <a href="#Cross_Site_Scripting" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Cross_Site_Scripting" rel="nofollow">Cross-Site Scripting (XSS)</a>
+</li><li> <a href="#Buffer_Overflows" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Buffer Overflows" rel="nofollow">Buffer Overflows</a>
+</li></ul>
+</td><td valign="top">
+<ul><li> <a href="#Injection_Flaws" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Injection Flaws" rel="nofollow">Injection Flaws</a>
+
+</li><li> <a href="#Insecure_Storage" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Insecure Storage" rel="nofollow">Insecure Storage</a>
+</li><li> <a href="#Denial_of_Service" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Denial_of_Service" rel="nofollow">Denial of Service (DOS)</a>
+
+</li>
+<li> <a href="#Insecure_Communication" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Insecure Communication" rel="nofollow">Insecure Communication</a>
+</li>
+
+<li> <a href="#Insecure_Configuration" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Insecure Configuration" rel="nofollow">Insecure Configuration</a>
+</li>
+<li> <a href="#Malicious_Execution" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Malicious_Execution" rel="nofollow">Malicious Execution</a></li>
+<li> <a href="#Web_Services" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Web Services" rel="nofollow">Web Services</a>
+</li><li> <a href="#AJAX_Security" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="AJAX Security" rel="nofollow">AJAX Security</a>
+</li>
+
+<li> <a href="#Challenge" onfocus="highlight(this.title.replace(&#39; &#39;,&#39;_&#39;))" title="Challenge" rel="nofollow">Challenge</a>
+
+</li></ul>
+</td></tr></tbody></table>
+
+
+<ul>
+  <li><a name="General" id="General"><span class="b">
+  OWASP WebGoat: General</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_General/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_General/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Simulation_General.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes <span class="u">HTTP Basics</span>, <span class="u">HTTP SPLITTING</span>, and <span class="u">'Create a WebGoat Lesson'</span> tutorial. This lesson presents the basics for understanding the transfer of data between the browser and the web application and how to perform HTTP Splitting attacks.
+  <br/>
+  Size:  3.2 MB
+    
+  <br/><br/>  </li>
+  <li><a name="Code_Quality" id="Code_Quality"><span class="b">
+  OWASP WebGoat: Code Quality</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_CodeQuality/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_CodeQuality/	index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Simulation_CodeQuality.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes <span class="u">Discovering clues in HTML Source</span>&nbsp;&nbsp;[<a href="http://yehg.net/lab/pr0js/training/view/owasp/webscarab/WebScarab_DiscoveringHTMLClues/index.html" onclick="view_movie(&#39;movies//WebScarab_DiscoveringHTMLClues/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebScarab_DiscoveringHTMLClues.zip/download" onclick="show_dl(this.href);return false;">Download</a>]. Developers are notorious for leaving statements like FIXME's, Code Broken, Hack, etc... inside the source code.  Review the source code for any comments denoting passwords, backdoors, or something doesn't work right.
+ 
+  <br/>
+  Size:  2.16 MB
+    
+  <br/><br/>  </li>  
+  <li><a name="Concurrency" id="Concurrency"><span class="b">
+  OWASP WebGoat: Concurrency</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_Concurrency/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_Concurrency/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Simulation_Concurrency.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes <span class="u">Threat Safety Problem</span> and <span class="u">Shopping Cart Concurrency Flaw</span> which are commonly caused due to the improper use of Java Static methods. Web applications can handle many HTTP requests simultaneously. Developers often use variables that are not thread safe.  Thread safety means that the fields of an object or class always maintain a valid state when used concurrently by multiple threads. It is often possible to exploit a concurrency bug by loading the same page as another user at the exact same time.
+Because all threads share the same method area, and the method area is where all class variables are stored, multiple threads can attempt to use the same class variables concurrently.
+  <br/>
+  Size:  6.24 MB
+    
+  <br/><br/>  </li>
+  
+
+
+  
+  <li><a name="Unvalidated_Parameters" id="Unvalidated_Parameters"><span class="b">
+OWASP WebGoat: Unvalidated Parameters</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_UnvalidatedParams/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_UnvalidatedParams/index.html&#39;);return false;">View</a> |   <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_UnvalidatedParams.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; [<span style="font-size:smaller;">as of 5.3, changed to Parameter Tampering</span>]<a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes <span class="u">Exploiting Hidden Fields</span>, <span class="u">Exploiting Unchecked Emails</span> and <span class="u">Bypassing Client Side JavaScript Validation</span> and <span class="u">Bypassing HTML Field Restrictions</span><sup class="b">v5.3</sup> [<a href="movies/WebGoat_BypassingHTMLFieldRestrictions/index.html" onclick="view_movie(&#39;movies/WebGoat_BypassingHTMLFieldRestrictions/index.html&#39;);return false;">View</a> |   <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_BypassingHTMLFieldRestrictions.zip/download" onclick="show_dl(this.href);return false;">Download</a>] . <span class="u">Exploiting Hidden Fields:</span> Developers will use hidden fields for tracking, login, pricing, etc.. information on a loaded page. While this is a convenient and easy mechanism for the developer, they often don't validate the information that is received from the hidden field. This lesson will teach the attacker to find and modify hidden fields to obtain a product for a price other than the price specified. It is always a good practice to validate all inputs.  <span class="u">Exploiting Unchecked Emails:</span> Most sites allow non-authenticated users to send e-mail to a 'friend'. This is a great mechanism for spammers to send out email using your corporate mail server. <span class="u">Bypassing Client Side JavaScript Validation:</span> Client-side validation should not be considered a secure means of validating parameters. This validation only helps reducing the amount of server processing time for normal users who do not know the format of required input. Attackers can bypass these mechanisms easily in various ways. Any client-side validation should be duplicated on the server side. This will greatly reduce the likelihood of insecure parameter values being used in the application.
+  <br/>
+  Size:  3.71 MB
+    
+  <br/><br/>  </li><li><a name="Access_Control_Flaws" id="Access_Control_Flaws">
+  <span class="b">WebGoat: Access Control Flaws</span></a>&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes 
+<span style="float:right;margin-left:1%">
+
+</span>  
+  <ul>
+	<li>Using an Access Control Matrix&nbsp;&nbsp;[<a href="movies/WebGoat_ACF_Using_an_Access_Control/index.html" onclick="view_movie(&#39;movies/WebGoat_ACF_Using_an_Access_Control/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_ACF_Using_an_Access_Control.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Bypass a Path Based Access Control Scheme&nbsp;&nbsp;[<a href="movies/WebGoat_ACF_BypassPathBasedACScheme/index.html" onclick="view_movie(&#39;movies/WebGoat_ACF_BypassPathBasedACScheme/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_ACF_BypassPathBasedACScheme.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>LAB: Role Based Access Control	
+	<ul>
+    <li class="linoimg">Stage 1: Bypass Business Layer Access Control&nbsp;&nbsp;[<a href="movies/WebGoat_ACF_LabStage1/index.html" onclick="view_movie(&#39;movies/WebGoat_ACF_LabStage1/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_ACF_LabStage1.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li class="linoimg">Stage 2: Add Business Layer Access Control</li>
+	<li class="linoimg">Stage 3: Bypass Data Layer Access Control&nbsp;&nbsp;[<a href="movies/WebGoat_ACF_LabStage3/index.html" onclick="view_movie(&#39;movies/WebGoat_ACF_LabStage3/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_ACF_LabStage3.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li class="linoimg">Stage 4: Add Data Layer Access Control</li>
+    </ul>
+	</li><li>Remote Admin Access&nbsp;&nbsp;[<a href="movies/WebGoat_ACF_Remote_Admin_Access/index.html" onclick="view_movie(&#39;movies/WebGoat_ACF_Remote_Admin_Access/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_ACF_Remote_Admin_Access.zip/download" onclick="show_dl(this.href);return false;">Download</a>] </li>
+</ul>
+In a role-based access control scheme, a role represents a set of access permissions and privileges. A user can be assigned one or more roles. A role-based access control scheme normally consists of two parts: role permission management and role assignment. A broken role-based access control scheme might allow a user to perform accesses that are not allowed by his/her assigned roles, or somehow allow privilege escalation to an unauthorized role.In a path based access control scheme, an attacker can traverse a path by providing relative path information. Therefore an attacker can use relative paths to access files that normally are not directly accessible by anyone, or would otherwise be denied if requested directly. <span class="u">Remote Admin Access</span>: applications will often have an administrative interface that allows privileged users access to functionality that normal users shouldn't see. The application server will often have an admin interface as well.
+  Size:  N/A
+    
+  <br/><br/>  </li>
+  
+  <li><a name="Authentication_Flaws" id="Authentication_Flaws">
+  <span class="b">OWASP WebGoat: Authentication Flaws</span></a>&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes<br/> 
+  <ul>
+	<li>
+	Password Strength [<a href="movies/WebGoat_AuthFlaws_PasswordStrength/index.html" onclick="view_movie(&#39;movies/WebGoat_AuthFlaws_PasswordStrength/index.html&#39;);return false;">View</a> |   <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AuthFlaws_PasswordStrength.zip/download" onclick="show_dl(this.href);return false;">Download</a>] 
+	</li>
+	<li>Exploiting Forgot Password&nbsp;&nbsp;[<a href="movies/WebGoat_AuthFlaws_ForgetPwd_BasicAuth/index.html" onclick="view_movie(&#39;movies/WebGoat_AuthFlaws_ForgetPwd_BasicAuth/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AuthFlaws_ForgetPwd_BasicAuth.zip/download" onclick="show_dl(this.href);return false;">Download</a>] <span style="font-size:9px">*same file</span></li>
+	<li>Probing Basic Authentication&nbsp;&nbsp;[<a href="movies/WebGoat_AuthFlaws_ForgetPwd_BasicAuth/index.html" onclick="view_movie(&#39;movies/WebGoat_AuthFlaws_ForgetPwd_BasicAuth/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AuthFlaws_ForgetPwd_BasicAuth.zip/download" onclick="show_dl(this.href);return false;">Download</a>] <span style="font-size:9px">*same file</span></li>
+	<li>Multi-Level Login 1<sup class="b">v5.3</sup>&nbsp;&nbsp;[<a href="movies/WebGoat_MultiLevel_Logon1/index.html" onclick="view_movie(&#39;movies/WebGoat_MultiLevel_Logon1/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_MultiLevel_Logon1.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Multi-Level Login 2<sup class="b">v5.3</sup>&nbsp;&nbsp;[<a href="movies/WebGoat_MultiLevel_Logon2/index.html" onclick="view_movie(&#39;movies/WebGoat_MultiLevel_Logon2/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_MultiLevel_Logon2.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+  </ul>
+    
+ Web applications frequently provide their users the ability to retrieve a forgotten password. Unfortunately, many web applications fail to implement the mechanism properly. The information required to verify the identity of the user is often overly simplistic. Basic Authentication is used to protect server side resources. The web server will send a 401 authentication request with the response for the requested resource. The client side browser will then prompt the user for a user name and password using a browser supplied dialog box. The browser will base64 encode the user name and password and send those credentials back to the web server. The web server will then validate the credentials and return the requested resource if the credentials are correct. These credentials are automatically resent for each page protected with this mechanism without requiring the user to enter their credentials again.
+  <br/>
+  Size:  3.13 MB
+    
+  <br/><br/>  </li><li><a name="Session_Management_Flaws" id="Session_Management_Flaws">
+  <span class="title">OWASP WebGoat: Session Management Flaws</span></a>&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes <span class="u">Session Fixation</span>&nbsp;&nbsp;[<a href="movies/WebGoat_SessionMan_Fixation/index.html" onclick="view_movie(&#39;movies/WebGoat_SessionMan_Fixation/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_SessionMan_Fixation.zip/download" onclick="show_dl(this.href);return false;">Download</a>], <span class="u">Spoofing an Authentication Cookie</span>&nbsp;&nbsp;[<a href="movies/WebGoat_SessionMan_ExploitingAuthCookie/index.html" onclick="view_movie(&#39;movies/WebGoat_SessionMan_ExploitingAuthCookie/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_SessionMan_ExploitingAuthCookie.zip/download" onclick="show_dl(this.href);return false;">Download</a>] and <span class="u">Hijacking a Session</span>&nbsp;&nbsp;[<a href="movies/WebGoat_SessionMan_SessionHijackingWithJHijack/index.html" onclick="view_movie(&#39;movies/WebGoat_SessionMan_SessionHijackingWithJHijack/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_SessionMan_SessionHijackingWithJHijack.zip/download" onclick="show_dl(this.href);return false;">Download</a>]. <span class="u">Spoofing an Authentication Cookie:</span> Many applications will automatically log a user into their site if the right authentication cookie is specified.   Some times the cookie values can be guessed if the algorithm for generating the cookie can be obtained.  Some times the cookies are left on the client machine and can be stolen by exploiting another system vulnerability.  Some times the cookies maybe intercepted using Cross site scripting.  This lesson tries to make the student aware of authentication cookies and presents the student with a way to defeat the cookie authentication method in this lesson.<br/>
+  <br/>
+  Before we can hijack a session, we must do <span class="u">Session Analysis</span>&nbsp;&nbsp;[<a href="movies/WebGoat_SessionMan_AnalyzingSessions/index.html" onclick="view_movie(&#39;movies/WebGoat_SessionMan_AnalyzingSessions/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_SessionMan_AnalyzingSessions.zip/download" onclick="show_dl(this.href);return false;">Download</a>] to determine exploitable sign. <br/>
+  <br/> 
+  <span class="u">Hijacking a Session:</span> Application developers who develop their own session IDs frequently forget to incorporate the complexity and randomness necessary for security. If the user specific session ID is not complex and random, then the application is highly susceptible to session-based brute force attacks.
+  <br/>  Size:  N/A
+    
+  <br/><br/>  </li><li><a name="Cross_Site_Scripting" id="Cross_Site_Scripting">
+  <span class="b">WebGoat: Cross-Site Scripting (XSS)</span></a>&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  It includes
+<span style="float:right;margin-left:1%">
+</span>  
+  <ul>
+	<li>Phishing with XSS&nbsp;&nbsp;[<a href="movies/WebGoat_XSS_PhishingWithXSS/index.html" onclick="view_movie(&#39;movies/WebGoat_XSS_PhishingWithXSS/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSS_PhishingWithXSS.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>LAB: Cross Site Scripting
+    <ul>
+	<li class="linoimg">Stage 1: Stored XSS&nbsp;&nbsp;[<a href="movies/WebGoat_XSSLab_Stage1/index.html" onclick="view_movie(&#39;movies/WebGoat_XSSLab_Stage1/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSSLab_Stage1.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li class="linoimg">Stage 2: Block Stored XSS using Input Validation</li>
+	<li class="linoimg">Stage 3: Stored XSS Revisited&nbsp;&nbsp;[<a href="movies/WebGoat_XSSLab_Stage3/index.html" onclick="view_movie(&#39;movies/WebGoat_XSSLab_Stage3/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSSLab_Stage3.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li class="linoimg">Stage 4: Block Stored XSS using Output Encoding&nbsp;&nbsp;[<a href="movies/WebGoat_XSSLab_Stage4/index.html" onclick="view_movie(&#39;movies/WebGoat_XSSLab_Stage4/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSSLab_Stage4.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li class="linoimg">Stage 5: Reflected XSS&nbsp;&nbsp;[<a href="movies/WebGoat_XSSLab_Stage5/index.html" onclick="view_movie(&#39;movies/WebGoat_XSSLab_Stage5/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSSLab_Stage5.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li class="linoimg">Stage 6: Block Reflected XSS</li>
+   
+    </ul> </li>
+	<li>Stored XSS Attacks&nbsp;&nbsp;[<a href="movies/WebGoat_XSS_StoredXSS/index.html" onclick="view_movie(&#39;movies/WebGoat_XSS_StoredXSS/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSS_StoredXSS.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Reflected XSS Attacks&nbsp;&nbsp;[<a href="movies/WebGoat_XSS_ReflectedXSS/index.html" onclick="view_movie(&#39;movies/WebGoat_XSS_ReflectedXSS/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSS_ReflectedXSS.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Cross Site Request Forgery (CSRF)&nbsp;&nbsp;[<a href="movies/WebGoat_XSS_XSRF/index.html" onclick="view_movie(&#39;movies/WebGoat_XSS_XSRF/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSS_XSRF.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>CSRF Prompt By-Pass<sup class="b">v5.3</sup>&nbsp;&nbsp;[<a href="movies/WebGoat_CSRF-Prompt-Bypass/index.html" onclick="view_movie(&#39;movies/WebGoat_CSRF-Prompt-Bypass/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_CSRF-Prompt-Bypass.zip/download" onclick="show_dl(this.href);return false;">Download</a>] </li>
+	<li>CSRF Token By-Pass<sup class="b">v5.3</sup>&nbsp;&nbsp;[<a href="movies/WebGoat_CSRF-Token-Bypass/index.html" onclick="view_movie(&#39;movies/WebGoat_CSRF-Token-Bypass/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_CSRF-Token-Bypass.zip/download" onclick="show_dl(this.href);return false;">Download</a>] </li> 
+	<li>HTTPOnly Test&nbsp;&nbsp;[<a href="movies/WebGoat_XSS_HttpOnlyTest/index.html" onclick="view_movie(&#39;movies/WebGoat_XSS_HttpOnlyTest/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSS_HttpOnlyTest.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Cross Site Tracing (XST) Attacks&nbsp;&nbsp;[<a href="movies/WebGoat_XSS_XST/index.html" onclick="view_movie(&#39;movies/WebGoat_XSS_XST/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_XSS_XST.zip/download" onclick="show_dl(this.href);return false;">Download</a>] </li>
+</ul>  
+  Size:  N/A
+    
+  <br/><br/>  </li>
+    <li><a name="Buffer_Overflows" id="Buffer_Overflows">
+  <span class="title">OWASP WebGoat: Buffer Overflows</span></a> &nbsp;&nbsp;[<a href="movies/WebGoat_Off-by-One-BufferOverflow/index.html" onclick="view_movie(&#39;movies/WebGoat_Off-by-One-BufferOverflow/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Off-by-One-BufferOverflow.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: Version 5.4 introduced nice <span class="u">Off-by-One Buffer Overflow</span> vulnerability drill. Despite being more rare, buffer overflow vulnerabilities on the web occur when a tier of the application has insufficient memory allocated to deal with the data submitted by the user. Typically, such a tier would be written in C or a similar language. For the particular subset, namely, off-by-one overflows, this lesson focuses on the consequences of being able to overwrite the position for the trailing null byte. As a result, further information is returned back to the user, due to the fact that no null byte was found. As of writing, this lesson has not been developed yet by WebGoat authors. <br/>
+  Size:  N/A
+    
+  <br/><br/>  </li>
+  <li><a name="Injection_Flaws" id="Injection_Flaws"><span class="b">OWASP WebGoat: Injection Flaws</span></a>&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+ <br/>Description: It includes the following:
+ 
+<ul>
+
+	<li>Command Injection&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_CommandInjection/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_CommandInjection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_CommandInjection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Blind SQL Injection&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_BlindSQLInjection/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_BlindSQLInjection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_BlindSQLInjection.zip/download" onclick="show_dl(this.href);return false;">Download</a>] (<span style="font-size:smaller;">as of 5.3, changed to Blind String SQL Injection</span>)</li>
+	<li>Numeric SQL Injection&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_NumericSQLInject/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_NumericSQLInject/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_NumericSQLInject.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+
+	<li>Log Spoofing&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_LogSpoofing/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_LogSpoofing/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_LogSpoofing.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>XPATH Injection!&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_XPathInjection/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_XPathInjection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_XPathInjection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>LAB: SQL Injection</li>
+
+    <ul>
+        <li class="linoimg">Stage 1: String SQL Injection&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_Lab_Stage1/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_Lab_Stage1/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_Lab_Stage1.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+    	<li class="linoimg">Stage 2: Parameterized Query #1</li>
+    
+    	<li class="linoimg">Stage 3: Numeric SQL Injection&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_Lab_Stage3/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_Lab_Stage3/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_Lab_Stage3.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+    	<li class="linoimg">Stage 4: Parameterized Query #2</li>    
+    </ul>
+	
+	<li>String SQL Injection&nbsp;&nbsp;[<a href="movies/WebGoat_InjectionFlaws_StringSQLInjection/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_StringSQLInjection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_StringSQLInjection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+
+	<li>Modify Data with SQL Injection<sup class="b">v5.3</sup>&nbsp;&nbsp;[<a href="movies/WebGoat_Data-Manipulation-with-SQL-Injection/index.html" onclick="view_movie(&#39;movies/WebGoat_Data-Manipulation-with-SQL-Injection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Data-Manipulation-with-SQL-Injection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]  <span style="font-size:9px">*same file</span></li>
+	<li>Add Data with SQL Injection<sup class="b">v5.3</sup>&nbsp;&nbsp;[<a href="movies/WebGoat_Data-Manipulation-with-SQL-Injection/index.html" onclick="view_movie(&#39;movies/WebGoat_Data-Manipulation-with-SQL-Injection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Data-Manipulation-with-SQL-Injection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]  <span style="font-size:9px">*same file</span></li>
+    
+	<li>Database Backdoors&nbsp;&nbsp;[<a href="http://yehg.net/index.html" onclick="view_movie(&#39;movies/WebGoat_InjectionFlaws_DatabaseBackdoor/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InjectionFlaws_DatabaseBackdoor.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	
+	<li>Blind Numeric SQL Injection<sup class="b">v5.3</sup>&nbsp;&nbsp;[<a href="movies/WebGoat_Blind_Numeric_SQL_Injection/index.html" onclick="view_movie(&#39;movies/WebGoat_Blind_Numeric_SQL_Injection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Blind_Numeric_SQL_Injection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]	 </li>
+</ul>
+  Size:  N/A
+    
+  <br/><br/>  
+  
+  </li>  
+    <li>
+  <a name="Improper_Error_Handling" id="Improper_Error_Handling"><span class="b">OWASP WebGoat: Improper Error Handling</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_ImproperErrorHandling/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_ImproperErrorHandling/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Simulation_ImproperErrorHandling.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: It includes <span class="u">Fail-Open Authentication Scheme</span>. This lesson presents the basics for understanding the "fail open" condition regarding authentication. The security term, "fail open" describes a behavior of a verification mechanism. This is when an error (i.e. unexpected exception) occurs during a verification method causing that method to evaluate to true. This is especially dangerous during login. This is analogous to my movie 'Exploiting Logic Flaws'.
+  <br/>  	
+  Size:  N/A
+    
+  <br/><br/>  </li>
+  <li><a name="Insecure_Storage" id="Insecure_Storage">
+  <span class="b">OWASP WebGoat: Insecure Storage</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_InsecureStorage_Encoding%20Basics/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_InsecureStorage_Encoding Basics/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InsecureStorage_EncodingBasics.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: It includes  <span class="u">Probing Encoding Basics</span>. This lesson will familiarize the user with different encoding schemes.
+  <br/>
+  Size:  N/A
+    
+  <br/><br/>  </li>  
+  <li><a name="Denial_of_Service" id="Denial_of_Service">
+  <span class="b">OWASP WebGoat: Denial of Service (DOS)</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_DOS/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_DOS/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Simulation_DOS.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: It includes <span class="u">Denial of Service from Multiple Logins</span>. Denial of service attacks are a major issue in web applications. If the end user cannot conduct business or perform the service offered by the web application, then both time and money is wasted. Business loses millions of $. If an e-commerce site can generate $1 million per hour, then 1-hr DOS cause loss of $1 million for that business.
+  <br/>
+  Size:  N/A
+    
+  <br/><br/>  </li>  
+
+  <li><a name="Insecure_Communication" id="Insecure_Communication">
+  <span class="b">OWASP WebGoat: Insecure Communication | Insecure Login</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_InsecureLogin/index.html" onclick="view_movie(&#39;movies/WebGoat_InsecureLogin/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_InsecureLogin.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: Sensitive data should never sent in plaintext! Often applications switch to a secure connection after the authorization. An attacker could just sniff the login and use the gathered information to break into an account. A good webapplication always takes care of encrypting sensitive data. See how easy it is to sniff a password in plaintext. Understand the advantages of encrypting the login data!
+
+  <br/>
+  Size:  N/A
+    
+  <br/><br/>  </li> 
+  
+  <li><a name="Insecure_Configuration" id="Insecure_Configuration">
+  <span class="b">OWASP WebGoat: Insecure Configuration</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_Simulation_InsecureCofig/index.html" onclick="view_movie(&#39;movies/WebGoat_Simulation_InsecureCofig/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Simulation_InsecureCofig.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: It includes <span class="u">Forced Browsing</span>. Forced browsing is a technique used by attackers to gain access to resources that are not referenced, but are nevertheless accessible. One technique is to manipulate the URL in the browser by deleting sections from the end until an unprotected directory is found. This one is what I call 'Directory BruteForcing'.
+  <br/>
+  Size:  N/A
+    
+  <br/><br/>  </li>  
+  
+
+  <li><a name="Malicious_Execution" id="Malicious_Execution"><span class="b">
+  OWASP WebGoat: Malicious Execution</span></a>&nbsp;&nbsp;[<a href="movies/WebGoat_MaliciousFileExecution/index.html" onclick="view_movie(&#39;movies/WebGoat_MaliciousFileExecution/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_MaliciousFileExecution.zip/download" onclick="show_dl(this.href);return false;">Download</a>]&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description:  This lesson allows you to upload an image which will be displayed on the page. Features like this are often found on web based discussion boards and social networking sites. This feature is vulnerable to Malicious File Execution. In order to pass this lesson, upload and run a malicious file. In order to prove that your file can execute, it should create another file named \WebGoat-x.x\tomcat\webapps\webgoat\mfe_target\guest.txt. Once you have created this file, you will pass the lesson.
+  <br/>
+  Size:  N/A
+    
+  <br/><br/>  </li>
+  
+  <li><a name="Web_Services" id="Web_Services">
+  <span class="b">OWASP WebGoat: Web Services</span></a>&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: It includes  
+  <ul>
+	<li>Create a SOAP Request&nbsp;&nbsp;[<a href="movies/WebGoat_WebServices_CreateSOAP/index.html" onclick="view_movie(&#39;movies/WebGoat_WebServices_CreateSOAP/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_WebServices_CreateSOAP.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>WSDL Scanning&nbsp;&nbsp;[<a href="movies/WebGoat_WebServices_WSDLScanning/index.html" onclick="view_movie(&#39;movies/WebGoat_WebServices_WSDLScanning/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_WebServices_WSDLScanning.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Web Service SAX Injection&nbsp;&nbsp;[<a href="movies/WebGoat_WebServices_SaxInjection/index.html" onclick="view_movie(&#39;movies/WebGoat_WebServices_SaxInjection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_WebServices_SaxInjection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Web Service SQL Injection&nbsp;&nbsp;[<a href="movies/WebGoat_WebServices_SQLinject/index.html" onclick="view_movie(&#39;movies/WebGoat_WebServices_SQLinject/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_WebServices_SQLinject.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+</ul>
+Web Services communicate through the use of SOAP requests. These requests are submitted to a web service in an attempt to execute a function defined in the web service definition language (WSDL). Some web interfaces make use of Web Services in the background. If the frontend relies on the web service for all input validation, it may be possible to corrupt the XML that the web interface sends. 
+
+<br/>
+  Size:  N/A    
+  <br/><br/>  </li>  
+  <li><a name="AJAX_Security" id="AJAX_Security">
+  <span class="b">OWASP WebGoat: AJAX Security</span></a>&nbsp;&nbsp; <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: It includes   
+  <ul>
+	<li>LAB: Client Side Filtering&nbsp;&nbsp;[<a href="movies/WebGoat_Ajax_Sec_LabClientSideFiltering/index.html" onclick="view_movie(&#39;movies/WebGoat_Ajax_Sec_LabClientSideFiltering/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_Ajax_Sec_LabClientSideFiltering.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>LAB: DOM-Based cross-site scripting&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_DomBasedXSS/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_DomBasedXSS/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_DomBasedXSS.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>DOM Injection&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_DomInjection/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_DomInjection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_DomInjection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Same Origin Policy Protection&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_SameOriginPolicyProtection/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_SameOriginPolicyProtection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_SameOriginPolicyProtection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>XML Injection&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_XML_Injection/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_XML_Injection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_XML_Injection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>JSON Injection&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_JSON_Injection/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_JSON_Injection/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_JSON_Injection.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Silent Transactions Attacks&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_SilentTransactionsAttacks/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_SilentTransactionsAttacks/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_SilentTransactionsAttacks.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Insecure Client Storage&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_InsecureClientStorage/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_InsecureClientStorage/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_InsecureClientStorage.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+	<li>Dangerous Use of Eval&nbsp;&nbsp;[<a href="movies/WebGoat_AjaxSec_DangerousEval/index.html" onclick="view_movie(&#39;movies/WebGoat_AjaxSec_DangerousEval/index.html&#39;);return false;">View</a> | <a href="http://sourceforge.net/projects/webappsecmovies/files/web/webgoat/WebGoat_AjaxSec_DangerousEval.zip/download" onclick="show_dl(this.href);return false;">Download</a>]</li>
+</ul>
+  Size:  N/A    
+  <br/><br/>  </li>  
+  <li><a name="Challenge" id="Challenge">
+  <span class="b">OWASP WebGoat: Challenge</span></a>&nbsp;&nbsp; [<a href="javascript:void(0)" onclick="alert(&#39;Do it yourself!&#39;)">Download</a>] <a href="#top" style="font-size: small;float:right;">[Top]</a>
+  <br/>
+  Description: The mission is to break the authentication scheme, steal all the credit cards from the database, and then deface the website. 
+  <br/>
+  Size:  N/A
+    
+  <br/><br/>  </li>  
+</ul>
+</span>
+<br/>
+<script type="text/javascript">
+var url = window.location+"";
+if (url.indexOf("#")  >-1){title = url.substring(url.indexOf("#")+1,url.length);$(title).style.backgroundColor='#F8FD66';   setTimeout("$('" + title + "').style.backgroundColor = '#FFFFFF'",6000);}
+function highlight(id)
+{
+    $(id).style.backgroundColor = '#D4FFAA';
+    setTimeout("$('" + id + "').style.backgroundColor = '#FFFFFF'",10000);
+}
+</script>
+<noscript>Enable JavaScript!</noscript>
+
+</body></html>
